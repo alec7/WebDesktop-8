@@ -18,29 +18,33 @@
                 }
 
                 //加载资源文件
-                var resource = {};
                 var sType = res.substring(res.lastIndexOf('.') + 1);
                 // 支持js/css
                 if(sType && ('js' == sType || 'css' == sType)){
                     var isScript = (sType == 'js');
                     var tag = isScript ? 'script' : 'link';
-                    var attrs = isScript ? {
-                        'type':'text/javascript',
-                        'src':'' + resource['src']
-                    } : {
-                        'type':'text/css',
-                        'rel':'stylesheet',
-                        'href':'' + resource['src']
-                    };
 
-                    //构造元素
-                    $('<' + tag + '>', $.extend(attrs, {
-                        id: rId ? rId : ''
-                    })).ready(function(){
-                        if('complete' == this.readyState){
-                            callback.call();
+                    var head = document.getElementsByTagName('head')[0];
+                    // 创建节点
+                    var linkScript = document.createElement(tag);
+                    linkScript.type = isScript ? 'text/javascript' : 'text/css';
+                    linkScript.charset = 'UTF-8';
+                    isScript ? linkScript.src = res : linkScript.href = res;
+                    if(callback && 'function' == typeof callback){
+                        if (linkScript.addEventListener){
+                            linkScript.addEventListener('load', function(){
+                                callback.call();
+                            }, false);
+                        } else if (linkScript.attachEvent) {
+                            linkScript.attachEvent('onreadystatechange', function(){
+                                var target = window.event.srcElement;
+                                if (target.readyState == 'complete') {
+                                    callback.call();
+                                }
+                            });
                         }
-                    }).appendTo($('head'));
+                    }
+                    head.appendChild(linkScript);
                 }
             }
         };

@@ -5,8 +5,6 @@
 (function($, window){
     'use strict';
 
-    alert('savsdv');
-
     var WebDesktop = function(){
         return {
             _version:'1.0',  //版本号

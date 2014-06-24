@@ -15,7 +15,7 @@
                     //动态加载js
                     $import('WebDesktop', webDesktop_theme, function(){
                         //创建WebDesktop
-                        WebDesktop.go(json);
+                        webDesktop.go(json);
                     });
                 }
             }
