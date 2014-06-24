@@ -24,7 +24,6 @@
                 $.extend(this._options, options);
             },
             go:function(options){
-                alert('sdvsdvb');
                 this._initial(options);
             }
         };

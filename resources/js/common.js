@@ -22,37 +22,29 @@
                 var sType = res.substring(res.lastIndexOf('.') + 1);
                 // 支持js/css
                 if(sType && ('js' == sType || 'css' == sType)){
-                    resource = {'sType':sType, 'src': res};
-                }
-                if(resource){
-                    sType = resource['sType'];
-                    if(sType){
-                        var isScript = (sType == 'js');
-                        var tag = isScript ? 'script' : 'link';
-                        var attrs = isScript ? {
-                            'type':'text/javascript',
-                            'src':'' + resource['src']
-                        } : {
-                            'type':'text/css',
-                            'rel':'stylesheet',
-                            'href':'' + resource['src']
-                        };
+                    var isScript = (sType == 'js');
+                    var tag = isScript ? 'script' : 'link';
+                    var attrs = isScript ? {
+                        'type':'text/javascript',
+                        'src':'' + resource['src']
+                    } : {
+                        'type':'text/css',
+                        'rel':'stylesheet',
+                        'href':'' + resource['src']
+                    };
 
-                        //构造元素
-                        $('<' + tag + '>', $.extend(attrs, {
-                            id: rId ? rId : ''
-                        })).on('load', function(){
-                            alert('csdv');
-                        }).appendTo($('head'));
-                    }
+                    //构造元素
+                    $('<' + tag + '>', $.extend(attrs, {
+                        id: rId ? rId : ''
+                    })).ready(function(){
+                        if('complete' == this.readyState){
+                            callback.call();
+                        }
+                    }).appendTo($('head'));
                 }
             }
         };
     }();
-
-    $('<div>', {
-        id:'div'
-    }).appendTo($('body'));
 
     window.$import = $import;
 })(jQuery, window);
