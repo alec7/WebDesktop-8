@@ -5,19 +5,32 @@
     'use strict';
 
     $(document).ready(function(){
-        //加载WebDesktop.json文件
-        $.getJSON('settings.json', function(json){
-            if(json){
-                //根据json数据创建WebDesktop
-                var theme = json['sys-theme'];
-                if(theme){
-                    var webDesktop_theme = 'themes/' + theme +'/WebDesktop.js';
-                    //动态加载js
-                    $import('WebDesktop', webDesktop_theme, function(){
-                        //创建WebDesktop
-                        webDesktop.go(json);
-                    });
-                }
+        //加载数据文件data.json
+        $.getJSON('data.json', function(data){
+            if(data){
+                //加载settings.json文件
+                $.getJSON('settings.json', function(json){
+                    if(json){
+                        var webDesktopRes = 'resources/js/WebDesktop.js';
+                        //动态加载js
+                        $import('WebDesktop', webDesktopRes, function(){
+                            //根据json数据创建WebDesktop
+                            (new WebDesktop()).go(data, json);
+
+                            //加载主题
+                            var themeId = json['sys-theme'];
+                            if(themeId && data['Theme']){
+                                var webDesktop_theme = data['Theme'][themeId];
+                                if(webDesktop_theme){
+                                    var css = webDesktop_theme['css'];
+                                    if(css){
+                                        $import('WebDesktop_theme', css, function(){});
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
             }
         });
     });

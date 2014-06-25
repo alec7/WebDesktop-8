@@ -1,0 +1,16 @@
+{
+    "Theme":{
+        "_default":{"id":"_default", "css":"themes/default/default.css"}
+    },
+    "Wallpaper":{
+        "_blue_glow":{"id":"_blue_glow", "name":{"zh_CN":"深海仰望"}, "wallpaper":"images/wallpapers/blue_glow.jpg"},
+        "_wood":{"id":"_wood", "name":{"zh_CN":"温馨木纹"}, "wallpaper":"images/wallpapers/wood.jpg"},
+        "_sky":{"id":"_sky", "name":{"zh_CN":"仰望苍穹"}, "wallpaper":"images/wallpapers/lookup_sky.jpg"},
+        "_grass":{"id":"_grass", "name":{"zh_CN":"茫茫野草"}, "wallpaper":"images/wallpapers/grass.jpg"},
+        "_magpie":{"id":"_magpie", "name":{"zh_CN":"七夕"}, "wallpaper":"images/wallpapers/magpie_festival.jpg"},
+        "_beach":{"id":"_beach", "name":{"zh_CN":"创意海滩"}, "wallpaper":"images/wallpapers/originality_beach.jpg"},
+        "_finger":{"id":"_finger", "name":{"zh_CN":"创意手指"}, "wallpaper":"images/wallpapers/originality_finger.jpg"},
+        "_love":{"id":"_love", "name":{"zh_CN":"爱情"}, "wallpaper":"images/wallpapers/originality_love.jpg"},
+        "_shell":{"id":"_shell", "name":{"zh_CN":"创意蛋壳"}, "wallpaper":"images/wallpapers/originality_shell.jpg"}
+    }
+}
