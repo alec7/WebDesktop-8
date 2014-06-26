@@ -15,19 +15,8 @@
                         //动态加载js
                         $import('WebDesktop', webDesktopRes, function(){
                             //根据json数据创建WebDesktop
-                            (new WebDesktop()).go(data, json);
-
-                            //加载主题
-                            var themeId = json['sys-theme'];
-                            if(themeId && data['Theme']){
-                                var webDesktop_theme = data['Theme'][themeId];
-                                if(webDesktop_theme){
-                                    var css = webDesktop_theme['css'];
-                                    if(css){
-                                        $import('WebDesktop_theme', css, function(){});
-                                    }
-                                }
-                            }
+                            WebDesktop.data = data;
+                            WebDesktop.go(json);
                         });
                     }
                 });

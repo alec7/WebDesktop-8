@@ -29,6 +29,9 @@
                     var linkScript = document.createElement(tag);
                     linkScript.type = isScript ? 'text/javascript' : 'text/css';
                     linkScript.charset = 'UTF-8';
+                    if(!isScript){
+                        linkScript.rel = 'stylesheet';
+                    }
                     isScript ? linkScript.src = res : linkScript.href = res;
                     if(callback && 'function' == typeof callback){
                         if (linkScript.addEventListener){
