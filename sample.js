@@ -13,7 +13,7 @@
                     if(json){
                         var webDesktopRes = 'resources/js/WebDesktop.js';
                         //动态加载js
-                        $import('WebDesktop', webDesktopRes, function(){
+                        Utils.$import('WebDesktop', webDesktopRes, function(){
                             //根据json数据创建WebDesktop
                             WebDesktop.data = data;
                             WebDesktop.go(json);

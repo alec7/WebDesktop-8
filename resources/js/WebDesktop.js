@@ -28,8 +28,8 @@
                     id: 'WebDesktop_' + this._uuid,
                     class: 'ui-desktop',
                     html: [
-                        WebDesktop.Wallpaper.initialize(this._options), //桌面壁纸
-                        WebDesktop.Taskbar.initialize(this._options)//桌面任务栏
+                        WebDesktop.Wallpaper.establish(this._options), //桌面壁纸
+                        WebDesktop.Taskbar.establish(this._options)//桌面任务栏
                     ]
                 }).appendTo($('body'));
 
@@ -68,7 +68,7 @@
                     if (webDesktop_theme) {
                         var css = webDesktop_theme['css'];
                         if (css) {
-                            $import('WebDesktop_theme', css, function () {
+                            Utils.$import('WebDesktop_theme', css, function () {
                             });
                         }
                     }
@@ -122,10 +122,10 @@
                 $.extend(this._options, options);
             },
             /**
-             * 初始化
+             * 创建
              * @param options
              */
-            initialize: function (options) {
+            establish: function (options) {
                 return this._initialize(options);
             },
             /**
@@ -161,7 +161,10 @@
 
                 //任务栏dom元素
                 var taskbar = $('<div>', {
-                    class: 'ui-desktop-taskbar'
+                    class: 'ui-desktop-taskbar',
+                    html:[
+                        WebDesktop.Tools.clock()
+                    ]
                 });
                 this._taskbar = taskbar;
 
@@ -179,10 +182,31 @@
                 $.extend(this._options, options);
             },
             /**
-             * 初始化
+             * 创建
+             * @param options
+             * @returns {*}
              */
-            initialize: function (options) {
+            establish: function (options) {
                 return this._initialize(options);
+            }
+        };
+    }();
+
+    /**
+     * 工具
+     * @constructor
+     */
+    WebDesktop.Tools = function(){
+        return {
+            clock:function(){
+                var clock =  $('<div>', {
+                    class:'ui-desktop-tool-clock'
+                }).ready(function(){
+                    setInterval(function(){
+                        $(clock).html(new Date().toLocaleTimeString());
+                    }, 1000)
+                });
+                return clock;
             }
         };
     }();

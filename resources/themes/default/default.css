@@ -3,4 +3,4 @@
 .ui-desktop { position: static; overflow: hidden; color: #333333; width: 100%; height: 100%; }
 .ui-desktop .ui-desktop-wallpaper { position: absolute; z-index: -9999; left: 0; top: 0; overflow: hidden; height: 100%; width: 100%; }
 .ui-desktop .ui-desktop-wallpaper img { width: 100%; }
-.ui-desktop .ui-desktop-taskbar { position: absolute; bottom: 0; background: url("img/bg_taskbar.png") 0 41px repeat-x; width: 100%; height: 64px; z-index: -9999; }
+.ui-desktop .ui-desktop-taskbar { position: absolute; bottom: 0; background: url("img/bg_bottom.png") 0 0 repeat-x #333; width: 100%; height: 30px; z-index: -9999; opacity: 0.6; }
