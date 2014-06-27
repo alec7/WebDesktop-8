@@ -163,7 +163,7 @@
                 var taskbar = $('<div>', {
                     class: 'ui-desktop-taskbar',
                     html:[
-                        WebDesktop.Tools.clock()
+                        WebDesktop.Tools.clock(this._options)
                     ]
                 });
                 this._taskbar = taskbar;
@@ -198,12 +198,23 @@
      */
     WebDesktop.Tools = function(){
         return {
-            clock:function(){
+            clock:function(options){
                 var clock =  $('<div>', {
                     class:'ui-desktop-tool-clock'
                 }).ready(function(){
+                    var format = '';
+                    var locale = '';
+                    if(WebDesktop.data['Dictionary'] && WebDesktop.data['Dictionary']['Datetime']){
+                        if(options['sys-locale']){
+                            var value = WebDesktop.data['Dictionary']['Datetime'][options['sys-locale']];
+                            if(value){
+                                format = value['format'];
+                                locale = value['locale'];
+                            }
+                        }
+                    }
                     setInterval(function(){
-                        $(clock).html(new Date().toLocaleTimeString());
+                        $(clock).html(Utils.$datetimeFormat(new Date(), 'HH:mm', locale)).attr('title', Utils.$datetimeFormat(new Date(), format, locale));
                     }, 1000)
                 });
                 return clock;

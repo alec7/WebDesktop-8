@@ -13,5 +13,11 @@
         "_finger":{"id":"_finger", "name":{"zh_CN":"创意手指"}, "img":"resources/img/wallpapers/originality_finger.jpg"},
         "_love":{"id":"_love", "name":{"zh_CN":"爱情"}, "img":"resources/img/wallpapers/originality_love.jpg"},
         "_shell":{"id":"_shell", "name":{"zh_CN":"创意蛋壳"}, "img":"resources/img/wallpapers/originality_shell.jpg"}
+    },
+    "Dictionary":{
+        "Datetime":{
+            "en-US":{"locale":"en-US","format":"EE, dd Mon yyyy HH:mm:ss"},
+            "zh-CN":{"locale":"zh-CN","format":"yyyy年MM月dd日 HH:mm:ss EEE"}
+        }
     }
 }

@@ -3,4 +3,5 @@
 .ui-desktop { position: static; overflow: hidden; color: #333333; width: 100%; height: 100%; }
 .ui-desktop .ui-desktop-wallpaper { position: absolute; z-index: -9999; left: 0; top: 0; overflow: hidden; height: 100%; width: 100%; }
 .ui-desktop .ui-desktop-wallpaper img { width: 100%; }
-.ui-desktop .ui-desktop-taskbar { position: absolute; bottom: 0; background: url("img/bg_bottom.png") 0 0 repeat-x #333; width: 100%; height: 30px; z-index: -9999; opacity: 0.6; }
+.ui-desktop .ui-desktop-taskbar { position: absolute; bottom: 0; background: url("img/bg_bottom.png") 0 0 repeat-x #333; border-top: 1px solid #FFF; width: 100%; height: 30px; line-height: 30px; z-index: -9999; opacity: 0.8; }
+.ui-desktop .ui-desktop-tool-clock { width: 120px; text-align:right; float: right; padding-right: 10px; color: #FFFFFF; font-weight: bold;}
