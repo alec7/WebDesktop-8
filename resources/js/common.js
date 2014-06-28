@@ -84,20 +84,21 @@
              * @param format 格式化字符串
              */
             $datetimeFormat: function (date, format, locale) {
-                function displayLocaleValue(data, locale){
+                function displayLocaleValue(data, locale) {
                     var language = locale || Utils.$browserLanguage();
-                    if(!language){
+                    if (!language) {
                         language = 'en_US';  //默认
                     }
-                    if(data){
-                        for(var key in data){
-                            if(data.hasOwnProperty(key) && key.toLowerCase().indexOf(language.toLowerCase()) != -1){
+                    if (data) {
+                        for (var key in data) {
+                            if (data.hasOwnProperty(key) && key.toLowerCase().indexOf(language.toLowerCase()) != -1) {
                                 return data[key];
                             }
                         }
                     }
                     return '';
                 }
+
                 if (date) {
                     if (!format) {
                         format = 'yyyy-MM-dd HH:mm:ss';
@@ -119,20 +120,20 @@
                             'm': date.getMinutes(),
                             's': date.getSeconds(),
                             'MM': ('' + (date.getMonth() + 101)).substring(1),
-                            'Mon':function(month, locale){
+                            'Mon': function (month, locale) {
                                 return displayLocaleValue(Utils.$month['Mon'][month], locale);
                             }(date.getMonth(), locale),
-                            'Month':function(month, locale){
+                            'Month': function (month, locale) {
                                 return displayLocaleValue(Utils.$month['Month'][month], locale);
                             }(date.getMonth(), locale),
                             'dd': ('' + (date.getDate() + 100)).substring(1),
                             'HH': ('' + (date.getHours() + 100)).substring(1),
                             'mm': ('' + (date.getMinutes() + 100)).substring(1),
                             'ss': ('' + (date.getSeconds() + 100)).substring(1),
-                            'EE': function(day, locale){
+                            'EE': function (day, locale) {
                                 return displayLocaleValue(Utils.$weekday['EE'][day], locale);
                             }(date.getDay(), locale),
-                            'EEE': function(day, locale){
+                            'EEE': function (day, locale) {
                                 return displayLocaleValue(Utils.$weekday['EEE'][day], locale);
                             }(date.getDay(), locale)
                         };
@@ -143,7 +144,7 @@
                 }
             },
             $weekday: {
-                'EE':{
+                'EE': {
                     0: {'zh-CN': '周日', 'en-US': 'Sun'},
                     1: {'zh-CN': '周一', 'en-US': 'Mon'},
                     2: {'zh-CN': '周二', 'en-US': 'Tue'},
@@ -163,7 +164,7 @@
                 }
             },
             $month: {
-                'Mon':{
+                'Mon': {
                     0: {'zh-CN': '一月', 'en-US': 'Jan'},
                     1: {'zh-CN': '二月', 'en-US': 'Feb'},
                     2: {'zh-CN': '三月', 'en-US': 'Mar'},
@@ -202,6 +203,29 @@
                     return navigator.language.toLowerCase();
                 }
                 return '';
+            },
+            /**
+             * 图片自适应
+             * @param elem 元素
+             * @param referElem 参照元素
+             */
+            $imgSelfAdaption: function (elem, referElem) {
+                if (elem) {
+                    if (!referElem) {
+                        referElem = $(elem).parent;
+                    }
+                    if (referElem) {
+                        var that = $(elem), refer = $(referElem);
+                        var width = that.width(), height = that.height(), referWidth = refer.width() || 0, referHeight = refer.height() || 0;
+                        if (referWidth && referHeight) {
+                            if (width / height >= referWidth / referHeight) {
+                                that.height(referHeight).width(width * (referHeight / height));
+                            } else {
+                                that.width(referWidth).height(height * (referWidth / width));
+                            }
+                        }
+                    }
+                }
             }
         };
     }();

@@ -3,6 +3,8 @@
 html, body { margin: 0; padding: 0; border: 0; background: #FFFFFF; font-size: 12px; font-family: "Verdana,Arial,Helvetica,sans-serif"; font-weight: normal; }
 body { display: block; width: 100%; height: 100%; background: none repeat scroll 0 0 transparent; }
 
+img { vertical-align: middle;}
+
 .pt5 { padding-top: 5px; }
 .pt10 { padding-top: 10px; }
 .pt20 { padding-top: 20px; }

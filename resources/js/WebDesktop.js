@@ -97,10 +97,6 @@
                 var wallpaper = $('<div>', {
                     class: 'ui-desktop-wallpaper',
                     html: [
-                        $('<img>', {
-                            class: 'ui-desktop-wallpaper-img',
-                            src: 'resources/img/s.gif'
-                        })
                     ]
                 });
                 this._wallpaper = wallpaper;
@@ -108,7 +104,20 @@
                 //设置默认壁纸
                 this.setWallpaper(this._options['sys-wallpaper']);
 
+                //添加监听
+                this._addEventListener();
+
                 return wallpaper;
+            },
+            /**
+             * 添加事件监听
+             * @private
+             */
+            _addEventListener: function () {
+                var win = $(window);
+                win.on('resize', function () {
+                    Utils.$imgSelfAdaption($('.ui-desktop-wallpaper-img', $(WebDesktop.Wallpaper._wallpaper)), this);
+                });
             },
             /**
              * 参数设置
@@ -136,11 +145,27 @@
                 if (!wallpaperId) {
                     wallpaperId = this._options['sys-wallpaper'];
                 }
+
+                var wallpaperRes = 'resources/img/s.gif';
                 if (wallpaperId && WebDesktop.data['Wallpaper']) {
                     var wallpaper = WebDesktop.data['Wallpaper'][wallpaperId];
                     if (wallpaper && wallpaper['img']) {
-                        $('img', $(WebDesktop.Wallpaper._wallpaper)).attr({'src': wallpaper['img']});
+                        wallpaperRes = wallpaper['img'];
                     }
+                }
+                if (wallpaperRes) {
+                    var wallpaperImg = $('.ui-desktop-wallpaper-img', $(WebDesktop.Wallpaper._wallpaper));
+                    if (wallpaperImg.length <= 0) {
+                        wallpaperImg = $('<img>', {
+                            class: 'ui-desktop-wallpaper-img',
+                            src: '' + wallpaperRes
+                        }).appendTo(WebDesktop.Wallpaper._wallpaper);
+                    }
+                    wallpaperImg.on('load', function () {
+                        if (this.complete) {
+                            Utils.$imgSelfAdaption(this, window);
+                        }
+                    });
                 }
             }
         }
@@ -162,8 +187,14 @@
                 //任务栏dom元素
                 var taskbar = $('<div>', {
                     class: 'ui-desktop-taskbar',
-                    html:[
-                        WebDesktop.Tools.clock(this._options)
+                    html: [
+                        $('<div>', {
+                            class: 'ui-desktop-taskbar-tool',
+                            html: [
+                                WebDesktop.Tools.volume(options).addClass('ui-desktop-taskbar-tool-item'),
+                                WebDesktop.Tools.clock(this._options).addClass('ui-desktop-taskbar-tool-item')
+                            ]
+                        })
                     ]
                 });
                 this._taskbar = taskbar;
@@ -196,28 +227,45 @@
      * 工具
      * @constructor
      */
-    WebDesktop.Tools = function(){
+    WebDesktop.Tools = function () {
         return {
-            clock:function(options){
-                var clock =  $('<div>', {
-                    class:'ui-desktop-tool-clock'
-                }).ready(function(){
+            /**
+             * 时钟显示
+             * @param options 参数
+             * @returns {*}
+             */
+            clock: function (options) {
+                var clock = $('<div>', {
+                    class: 'ui-desktop-tool-clock'
+                }).ready(function () {
                     var format = '';
                     var locale = '';
-                    if(WebDesktop.data['Dictionary'] && WebDesktop.data['Dictionary']['Datetime']){
-                        if(options['sys-locale']){
+                    if (WebDesktop.data['Dictionary'] && WebDesktop.data['Dictionary']['Datetime']) {
+                        if (options['sys-locale']) {
                             var value = WebDesktop.data['Dictionary']['Datetime'][options['sys-locale']];
-                            if(value){
+                            if (value) {
                                 format = value['format'];
                                 locale = value['locale'];
                             }
                         }
                     }
-                    setInterval(function(){
-                        $(clock).html(Utils.$datetimeFormat(new Date(), 'HH:mm', locale)).attr('title', Utils.$datetimeFormat(new Date(), format, locale));
+                    setInterval(function () {
+                        $(clock).html(Utils.$datetimeFormat(new Date(), 'yyyy-MM-dd HH:mm', locale)).attr('title', Utils.$datetimeFormat(new Date(), format, locale));
                     }, 1000)
                 });
                 return clock;
+            },
+            /**
+             * 音量控制
+             * @param options
+             * @returns {*}
+             */
+            volume: function (options) {
+                var volume = $('<div>', {
+                    class: 'ui-desktop-tool-volume'
+                }).ready(function () {
+                });
+                return volume;
             }
         };
     }();

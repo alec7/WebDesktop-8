@@ -1,7 +1,13 @@
 @charset "utf-8";
 
+html, body { margin: 0; padding: 0; border: 0; background: #222; font-size: 12px; font-family: "Verdana,Arial,Helvetica,sans-serif"; font-weight: normal; }
+body { display: block; width: 100%; height: 100%; background: none repeat scroll 0 0 transparent; }
+
 .ui-desktop { position: static; overflow: hidden; color: #333333; width: 100%; height: 100%; }
-.ui-desktop .ui-desktop-wallpaper { position: absolute; z-index: -9999; left: 0; top: 0; overflow: hidden; height: 100%; width: 100%; }
-.ui-desktop .ui-desktop-wallpaper img { width: 100%; }
-.ui-desktop .ui-desktop-taskbar { position: absolute; bottom: 0; background: url("img/bg_bottom.png") 0 0 repeat-x #333; border-top: 1px solid #FFF; width: 100%; height: 30px; line-height: 30px; z-index: -9999; opacity: 0.8; }
-.ui-desktop .ui-desktop-tool-clock { width: 120px; text-align:right; float: right; padding-right: 10px; color: #FFFFFF; font-weight: bold;}
+.ui-desktop .ui-desktop-wallpaper { z-index: -9999; position: absolute; left: 0; top: 0; overflow: hidden; height: 100%; width: 100%; }
+.ui-desktop .ui-desktop-wallpaper img { }
+.ui-desktop .ui-desktop-taskbar { position: absolute; bottom: 0; background: url("img/bg_taskbar.png") 0 0 repeat-x #333; border-top: 1px solid #FFF; width: 100%; height: 30px; line-height: 30px; z-index: -9999; opacity: 0.8; }
+.ui-desktop .ui-desktop-taskbar .ui-desktop-taskbar-tool { float: right; }
+.ui-desktop .ui-desktop-taskbar .ui-desktop-taskbar-tool .ui-desktop-taskbar-tool-item { margin: 0 10px 0 0; }
+.ui-desktop .ui-desktop-tool-clock { display: inline-block; text-align:right; padding-right: 10px; color: #FFFFFF; cursor: default; }
+.ui-desktop .ui-desktop-tool-volume { width: 22px; height: 22px; background: url('img/bg_icons_gather.png') no-repeat; margin:auto 0; display:inline-block; vertical-align:middle; }
