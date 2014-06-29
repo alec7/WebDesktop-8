@@ -11,3 +11,4 @@ body { display: block; width: 100%; height: 100%; background: none repeat scroll
 .ui-desktop .ui-desktop-taskbar .ui-desktop-taskbar-tool .ui-desktop-taskbar-tool-item { margin: 0 10px 0 0; }
 .ui-desktop .ui-desktop-tool-clock { display: inline-block; text-align:right; padding-right: 10px; color: #FFFFFF; cursor: default; }
 .ui-desktop .ui-desktop-tool-volume { width: 22px; height: 22px; background: url('img/bg_icons_gather.png') no-repeat; margin:auto 0; display:inline-block; vertical-align:middle; }
+.ui-desktop .ui-desktop-tool-volume-mute { background-position: 0 -20px; }

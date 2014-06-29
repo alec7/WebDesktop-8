@@ -264,9 +264,12 @@
                 var volume = $('<div>', {
                     class: 'ui-desktop-tool-volume'
                 }).ready(function () {
+                }).click(function(){
+                    $(this).toggleClass('ui-desktop-tool-volume-mute');
                 });
                 return volume;
-            }
+            },
+
         };
     }();
 
