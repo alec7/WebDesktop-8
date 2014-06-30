@@ -28,7 +28,9 @@
                     id: 'WebDesktop_' + this._uuid,
                     class: 'ui-desktop',
                     html: [
-                        WebDesktop.Wallpaper.establish(this._options), //桌面壁纸
+                        WebDesktop.Wallpaper.establish(this._options), //桌面壁纸,
+                        WebDesktop.DesktopWrapper.establish(this._options), //桌面
+                        WebDesktop.Sidebar.establish(this._options), //侧边栏
                         WebDesktop.Taskbar.establish(this._options)//桌面任务栏
                     ]
                 }).appendTo($('body'));
@@ -171,6 +173,106 @@
         }
     }();
 
+    /**
+     * 桌面包装器
+     */
+    WebDesktop.DesktopWrapper = function () {
+        return {
+            _options: {},  //配置属性
+            _wrapper: null,
+            /**
+             * 任务栏初始化
+             * @private
+             */
+            _initialize: function (options) {
+                //设置属性
+                this._setOptions(options);
+
+                var wrapper = $('<div>', {
+                    class: 'ui-desktop-wrapper'
+                });
+                this._wrapper = wrapper;
+
+                return wrapper;
+            },
+            /**
+             * 参数设置
+             * @param options
+             * @private
+             */
+            _setOptions: function (options) {
+                //默认选项
+                this._options = {
+                };
+                $.extend(this._options, options);
+            },
+            /**
+             * 创建
+             * @param options
+             * @returns {*}
+             */
+            establish: function (options) {
+                return this._initialize(options);
+            }
+        };
+    }();
+
+    /**
+     * 桌面侧边栏
+     */
+    WebDesktop.Sidebar = function () {
+        return {
+            _options: {},  //配置属性
+            _sidebar: null,
+            /**
+             * 任务栏初始化
+             * @private
+             */
+            _initialize: function (options) {
+                //设置属性
+                this._setOptions(options);
+
+                var sidebar = $('<div>', {
+                    class: 'ui-desktop-sidebar',
+                    html: function () {
+                        return [
+                            WebDesktop.CustomTools.clock()
+                        ];
+                    }
+                }).on({
+                    'mouseover': function () {
+                        $(this).addClass('ui-desktop-sidebar-hover');
+                    },
+                    'mouseout': function () {
+                        $(this).removeClass('ui-desktop-sidebar-hover');
+                    }
+                });
+                this._sidebar = sidebar;
+
+                return sidebar;
+            },
+            /**
+             * 参数设置
+             * @param options
+             * @private
+             */
+            _setOptions: function (options) {
+                //默认选项
+                this._options = {
+                };
+                $.extend(this._options, options);
+            },
+            /**
+             * 创建
+             * @param options
+             * @returns {*}
+             */
+            establish: function (options) {
+                return this._initialize(options);
+            }
+        };
+    }();
+
     //桌面任务栏
     WebDesktop.Taskbar = function () {
         return {
@@ -188,11 +290,13 @@
                 var taskbar = $('<div>', {
                     class: 'ui-desktop-taskbar',
                     html: [
+                        WebDesktop.StartMenubar.establish(this._options),
+                        WebDesktop.SystemTools.showDesktop(),
                         $('<div>', {
                             class: 'ui-desktop-taskbar-tool',
                             html: [
-                                WebDesktop.Tools.volume(options).addClass('ui-desktop-taskbar-tool-item'),
-                                WebDesktop.Tools.clock(this._options).addClass('ui-desktop-taskbar-tool-item')
+                                WebDesktop.SystemTools.volume().addClass('ui-desktop-taskbar-tool-item'),
+                                WebDesktop.SystemTools.clock(this._options).addClass('ui-desktop-taskbar-tool-item')
                             ]
                         })
                     ]
@@ -224,10 +328,64 @@
     }();
 
     /**
-     * 工具
+     * 开始菜单
+     */
+    WebDesktop.StartMenubar = function () {
+        return {
+            _options: {},  //配置属性
+            _startMenubar: null,  //开始菜单对象
+            /**
+             * 开始菜单
+             * @private
+             */
+            _initialize: function (options) {
+                //设置属性
+                this._setOptions(options);
+
+                //开始菜单栏dom元素
+                var _startMenubar = $('<div>', {
+                    class: 'ui-desktop-startMenubar',
+                    html: [
+                        $('<div>', {
+                            html: 'Start',
+                            class: 'ui-desktop-startMenubar-button'
+                        }),
+                        $('div', {
+                            class: 'ui-desktop-startMenubar-ui'
+                        })
+                    ]
+                });
+
+                this._startMenubar = _startMenubar;
+
+                return _startMenubar;
+            },
+            /**
+             * 参数设置
+             * @param options
+             * @private
+             */
+            _setOptions: function (options) {
+                //默认选项
+                this._options = {
+                };
+                $.extend(this._options, options);
+            },
+            /**
+             * 创建
+             * @param options
+             */
+            establish: function (options) {
+                return this._initialize(options);
+            }
+        }
+    }();
+
+    /**
+     * 系统工具
      * @constructor
      */
-    WebDesktop.Tools = function () {
+    WebDesktop.SystemTools = function () {
         return {
             /**
              * 时钟显示
@@ -250,27 +408,68 @@
                         }
                     }
                     setInterval(function () {
-                        $(clock).html(Utils.$datetimeFormat(new Date(), 'yyyy-MM-dd HH:mm', locale)).attr('title', Utils.$datetimeFormat(new Date(), format, locale));
+                        $(clock).html(Utils.$datetimeFormat(new Date(), 'HH:mm:ss', locale)).attr('title', Utils.$datetimeFormat(new Date(), format, locale));
                     }, 1000)
                 });
                 return clock;
             },
             /**
              * 音量控制
-             * @param options
              * @returns {*}
              */
-            volume: function (options) {
-                var volume = $('<div>', {
+            volume: function () {
+                return $('<div>', {
                     class: 'ui-desktop-tool-volume'
                 }).ready(function () {
-                }).click(function(){
+                }).click(function () {
                     $(this).toggleClass('ui-desktop-tool-volume-mute');
                 });
-                return volume;
             },
-
+            /**
+             * 显示桌面
+             */
+            showDesktop: function () {
+                return $('<div>', {
+                    class: 'ui-desktop-tool-showdesktop'
+                }).click(function () {
+                });
+            }
         };
+    }();
+
+    /**
+     * 自定义工具
+     */
+    WebDesktop.CustomTools = function () {
+        return {
+            clock: function () {
+                return WebDesktop.Tool.append($('<div>', {
+                    class:'ui-desktop-customer-clock'
+                }).ready(function(){
+                    var children = [];
+                    //计算圆半径
+                    var r = $(this).width();
+                    return children;
+                }));
+            }
+        };
+    }();
+
+    /**
+     * 工具API
+     * @constructor
+     */
+    WebDesktop.Tool = function () {
+        return $('<div>', {
+            class: 'ui-desktop-tool'
+        })
+    }();
+
+    /**
+     * 应用API
+     * @constructor
+     */
+    WebDesktop.Application = function () {
     }();
 
     window.WebDesktop = WebDesktop;
