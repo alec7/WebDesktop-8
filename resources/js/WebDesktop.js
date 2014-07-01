@@ -444,21 +444,24 @@
         return {
             clock: function () {
                 var clock = $('<div>', {
-                    class: 'ui-desktop-customer-clock',
+                    class: 'ui-customer-clock',
                     html: [
+                        $('<div>', {
+                            class:'ui-customer-clock-centre'
+                        }),
+                        $('<div>', {
+                            class: 'ui-customer-clock-mark'
+                        })
                     ]
                 }).ready(function () {
                     setTimeout(function () {
                         //计算圆半径
-                        var r = $(clock).width();
+                        var r = $(clock).width() / 2;
                         if (r > 0) {
                             //时钟刻度
-                            var clockMark = $('<div>', {
-                                class: 'ui-clock-mark'
-                            }).appendTo(clock);
                             for (var i = 1; i < 61; i++) {
                                 var mark = $('<b>', {
-                                }).appendTo(clockMark);
+                                }).appendTo($('.ui-customer-clock-mark', clock));
 
                                 // 利用正弦定理计算刻度的定位
                                 var left = r + r * (Math.sin(i * 6 * 2 * Math.PI / 360));
@@ -470,12 +473,12 @@
 
                                 if (i % 5 == 0) {
                                     //小时刻度
-                                    mark.addClass('ui-clock-mark-hour').html($('<i>', {
+                                    mark.addClass('ui-customer-clock-mark-hour').html($('<i>', {
                                         html: i / 5
                                     }));
                                 } else {
                                     //分钟刻度
-                                    mark.addClass('ui-clock-mark-minute');
+                                    mark.addClass('ui-customer-clock-mark-minute');
                                 }
                             }
                         }
