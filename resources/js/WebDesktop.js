@@ -443,14 +443,45 @@
     WebDesktop.CustomTools = function () {
         return {
             clock: function () {
-                return WebDesktop.Tool.append($('<div>', {
-                    class:'ui-desktop-customer-clock'
-                }).ready(function(){
-                    var children = [];
-                    //计算圆半径
-                    var r = $(this).width();
-                    return children;
-                }));
+                var clock = $('<div>', {
+                    class: 'ui-desktop-customer-clock',
+                    html: [
+                    ]
+                }).ready(function () {
+                    setTimeout(function () {
+                        //计算圆半径
+                        var r = $(clock).width();
+                        if (r > 0) {
+                            //时钟刻度
+                            var clockMark = $('<div>', {
+                                class: 'ui-clock-mark'
+                            }).appendTo(clock);
+                            for (var i = 1; i < 61; i++) {
+                                var mark = $('<b>', {
+                                }).appendTo(clockMark);
+
+                                // 利用正弦定理计算刻度的定位
+                                var left = r + r * (Math.sin(i * 6 * 2 * Math.PI / 360));
+                                var top = r - r * (Math.sin((90 - i * 6) * 2 * Math.PI / 360));
+                                mark.css('position', 'absolute').offset({top: top, left: left});
+                                //计算转动的角度
+                                var transform = 'rotate(' + (i * 6) + 'deg)';
+                                mark.css({'transform': transform, '-webkit-transform': transform, '-mon-transform': transform, '-ms-transform': transform, '-o-transform': transform });
+
+                                if (i % 5 == 0) {
+                                    //小时刻度
+                                    mark.addClass('ui-clock-mark-hour').html($('<i>', {
+                                        html: i / 5
+                                    }));
+                                } else {
+                                    //分钟刻度
+                                    mark.addClass('ui-clock-mark-minute');
+                                }
+                            }
+                        }
+                    }, 100);
+                });
+                return WebDesktop.Tool.append(clock);
             }
         };
     }();
