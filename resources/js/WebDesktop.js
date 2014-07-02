@@ -236,7 +236,7 @@
                     class: 'ui-desktop-sidebar',
                     html: function () {
                         return [
-                            WebDesktop.CustomTools.clock()
+                            WebDesktop.Widgets.clock.establish(this.options)
                         ];
                     }
                 }).on({
@@ -440,62 +440,122 @@
     /**
      * 自定义工具
      */
-    WebDesktop.CustomTools = function () {
+    WebDesktop.Widgets = function () {
         return {
-            clock: function () {
-                var clock = $('<div>', {
-                    class: 'ui-customer-clock',
-                    html: [
-                        $('<div>', {
-                            class:'ui-customer-clock-centre'
-                        }),
-                        $('<div>', {
-                            class: 'ui-customer-clock-mark'
-                        })
-                    ]
-                }).ready(function () {
-                    setTimeout(function () {
-                        //计算圆半径
-                        var r = $(clock).width() / 2;
-                        if (r > 0) {
-                            //时钟刻度
-                            for (var i = 1; i < 61; i++) {
-                                var mark = $('<b>', {
-                                }).appendTo($('.ui-customer-clock-mark', clock));
+            clock: {
+                _clock: null,
+                _initialize: function (options) {
+                    this._setOptions(options);
 
-                                // 利用正弦定理计算刻度的定位
-                                var left = r + r * (Math.sin(i * 6 * 2 * Math.PI / 360));
-                                var top = r - r * (Math.sin((90 - i * 6) * 2 * Math.PI / 360));
-                                mark.css('position', 'absolute').offset({top: top, left: left});
-                                //计算转动的角度
-                                var transform = 'rotate(' + (i * 6) + 'deg)';
-                                mark.css({'transform': transform, '-webkit-transform': transform, '-mon-transform': transform, '-ms-transform': transform, '-o-transform': transform });
+                    // 创建clock
+                    var clock = $('<div>', {
+                        class: 'ui-widget-clock',
+                        html: [
+                            $('<div>', {
+                                class: 'ui-widget-clock-centre'
+                            }),
+                            $('<div>', {
+                                class: 'ui-widget-clock-hourhand'
+                            }),
+                            $('<div>', {
+                                class: 'ui-widget-clock-minutehand'
+                            }),
+                            $('<div>', {
+                                class: 'ui-widget-clock-secondhand'
+                            }),
+                            $('<div>', {
+                                class: 'ui-widget-clock-mark'
+                            })
+                        ]
+                    }).ready(function () {
+                        setTimeout(function () {
+                            //计算圆半径
+                            var r = $(clock).width() / 2;
+                            if (r > 0) {
+                                $('.ui-widget-clock-mark', clock).css('position', 'relative');
+                                //时钟刻度
+                                for (var i = 1; i < 61; i++) {
+                                    var mark = $('<b>', {
+                                    }).appendTo($('.ui-widget-clock-mark', clock));
 
-                                if (i % 5 == 0) {
-                                    //小时刻度
-                                    mark.addClass('ui-customer-clock-mark-hour').html($('<i>', {
-                                        html: i / 5
-                                    }));
-                                } else {
-                                    //分钟刻度
-                                    mark.addClass('ui-customer-clock-mark-minute');
+                                    // 利用正弦定理计算刻度的定位
+                                    var left = r + r * (Math.sin(i * 6 * 2 * Math.PI / 360));
+                                    var top = r - r * (Math.sin((90 - i * 6) * 2 * Math.PI / 360));
+                                    //计算转动的角度
+                                    var transform = 'rotate(' + (i * 6) + 'deg)';
+                                    mark.css({top: top, left: left, 'transform': transform, '-webkit-transform': transform, '-mon-transform': transform, '-ms-transform': transform, '-o-transform': transform });
+
+                                    if (i % 5 == 0) {
+                                        //小时刻度, 同时将数字转正
+                                        transform = 'rotate(' + -(i * 6) + 'deg)';
+                                        mark.addClass('ui-widget-clock-mark-hour').html($('<i>', {
+                                            html: i / 5
+                                        }).css({'transform': transform, '-webkit-transform': transform, '-mon-transform': transform, '-ms-transform': transform, '-o-transform': transform }));
+                                    } else {
+                                        //分钟刻度
+                                        mark.addClass('ui-widget-clock-mark-minute');
+                                    }
                                 }
                             }
+
+                            WebDesktop.Widgets.clock.run();
+                        }, 100);
+                    });
+                    this._clock = clock;
+                    return WebDesktop.Widget.append(clock);
+                },
+                _setOptions: function (options) {
+                    //默认选项
+                    this._options = {
+                    };
+                    $.extend(this._options, options);
+                },
+                /**
+                 * 创建
+                 * @param options
+                 */
+                establish: function (options) {
+                    return this._initialize(options);
+                },
+                /**
+                 * 启动，让时钟走动
+                 */
+                run: function () {
+                    var clock = this._clock;
+                    setInterval(function () {
+                        var now = new Date();
+                        var hours = now.getHours(), minutes = now.getMinutes() + 1, seconds = now.getSeconds();
+
+                        //设置时针、分针、秒针的角度、位置
+                        var r = $(clock).width() / 2;
+                        if (r) {
+                            //时针
+                            var left = r + r * (Math.sin(hours * 2 * Math.PI / 360));
+                            var top = r - r * (Math.sin((90 - hours) * 2 * Math.PI / 360));
+                            var transform = 'rotate(' + (360 / 12 * hours) + 'deg)';
+                            $('.ui-widget-clock-hourhand', clock).css({'transform': transform, '-webkit-transform': transform, '-mon-transform': transform, '-ms-transform': transform, '-o-transform': transform });
+
+                            //分针
+                            transform = 'rotate(' + (360 / 60 * minutes) + 'deg)';
+                            $('.ui-widget-clock-minutehand', clock).css({'transform': transform, '-webkit-transform': transform, '-mon-transform': transform, '-ms-transform': transform, '-o-transform': transform });
+
+                            //秒针
+                            transform = 'rotate(' + (360 / 60 * seconds) + 'deg)';
+                            $('.ui-widget-clock-secondhand', clock).css({'transform': transform, '-webkit-transform': transform, '-mon-transform': transform, '-ms-transform': transform, '-o-transform': transform });
                         }
-                    }, 100);
-                });
-                return WebDesktop.Tool.append(clock);
+                    }, 1000);
+                }
             }
         };
     }();
 
     /**
-     * 工具API
+     * 小部件API
      * @constructor
      */
-    WebDesktop.Tool = function () {
+    WebDesktop.Widget = function () {
         return $('<div>', {
-            class: 'ui-desktop-tool'
+            class: 'ui-desktop-widget'
         })
     }();
 

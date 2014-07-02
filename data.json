@@ -3,7 +3,7 @@
         "_default":{"id":"_default", "css":"resources/themes/default/default.css"}
     },
     "Wallpaper":{
-        "_default":{"id":"_blue_glow", "name":{"zh_CN":"深海仰望"}, "img":"resources/img/wallpapers/wallpaper.jpg"},
+        "_default":{"id":"_blue_glow", "name":{"zh_CN":"深海仰望"}, "img":"resources/img/wallpapers/blue_glow.jpg"},
         "_blue_glow":{"id":"_blue_glow", "name":{"zh_CN":"深海仰望"}, "img":"resources/img/wallpapers/blue_glow.jpg"},
         "_wood":{"id":"_wood", "name":{"zh_CN":"温馨木纹"}, "img":"resources/img/wallpapers/wood.jpg"},
         "_sky":{"id":"_sky", "name":{"zh_CN":"仰望苍穹"}, "img":"resources/img/wallpapers/lookup_sky.jpg"},
