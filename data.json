@@ -14,6 +14,15 @@
         "_love":{"id":"_love", "name":{"zh_CN":"爱情"}, "img":"resources/img/wallpapers/originality_love.jpg"},
         "_shell":{"id":"_shell", "name":{"zh_CN":"创意蛋壳"}, "img":"resources/img/wallpapers/originality_shell.jpg"}
     },
+    "Widget":{
+        "clock":{
+            "id":"clock",
+            "js":"resources/widgets/clock/Clock.js",
+            "theme": {
+                "_default":{"id":"_default", "css":"resources/widgets/clock/themes/default/default.css"}
+            }
+        }
+    },
     "Dictionary":{
         "Datetime":{
             "en-US":{"locale":"en-US","format":"EE, dd Mon yyyy HH:mm:ss"},

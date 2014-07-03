@@ -2,5 +2,12 @@
     "sys-locale": "zh-CN",
     "sys-theme": "_default",
     "sys-wallpaper": "_default",
-    "sys-skin": "_default"
+    "sys-skin": "_default",
+    "sidebar": {
+        "widgets": {
+            "clock": {
+                "theme": "_default"
+            }
+        }
+    }
 }
