@@ -21,6 +21,20 @@
             "theme": {
                 "_default":{"id":"_default", "css":"resources/widgets/clock/themes/default/default.css"}
             }
+        },
+        "weather":{
+            "id":"weather",
+            "js":"resources/widgets/weather/Weather.js",
+            "theme": {
+                "_default":{"id":"_default", "css":"resources/widgets/weather/themes/default/default.css"}
+            }
+        },
+        "calculator":{
+            "id":"calculator",
+            "js":"resources/widgets/calculator/Calculator.js",
+            "theme": {
+                "_default":{"id":"_default", "css":"resources/widgets/calculator/themes/default/default.css"}
+            }
         }
     },
     "Dictionary":{

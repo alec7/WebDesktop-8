@@ -4,10 +4,11 @@
  */
 (function ($) {
     $.fn.clock = function (options) {
-        console.log(this.length);
         if (this.length > 0) {
             this.each(function () {
-                Clock.establish(this, options)
+                if(Clock.establish(this, options)){
+                    Clock.run();
+                }
             });
         }
     };
@@ -22,28 +23,29 @@
 
                 // 创建clock
                 var clock = $('<div>', {
-                    class: 'ui-widget-clock',
+                    class: 'ui-clock',
                     html: [
                         $('<div>', {
-                            class: 'ui-widget-clock-centre'
+                            class: 'ui-clock-centre'
                         }),
                         $('<div>', {
-                            class: 'ui-widget-clock-hourhand'
+                            class: 'ui-clock-hourhand'
                         }),
                         $('<div>', {
-                            class: 'ui-widget-clock-minutehand'
+                            class: 'ui-clock-minutehand'
                         }),
                         $('<div>', {
-                            class: 'ui-widget-clock-secondhand'
+                            class: 'ui-clock-secondhand'
                         }),
                         $('<div>', {
-                            class: 'ui-widget-clock-mark'
+                            class: 'ui-clock-mark'
                         })
                     ]
                 }).appendTo(elem);
 
+                var that = this;
                 //添加刻度
-                $('.ui-widget-clock-mark', clock).html(function () {
+                $('.ui-clock-mark', clock).html(function () {
                     var children = [];
                     //设置时钟高度和宽度，保证宽度和高度相等
                     var width = $(clock).width() || that._options.width, height = $(clock).height() || that._options.height;
@@ -68,12 +70,12 @@
                             if (i % 5 == 0) {
                                 //小时刻度, 同时将数字转正
                                 transform = 'rotate(' + -(i * 6) + 'deg)';
-                                mark.addClass('ui-widget-clock-mark-hour').html($('<i>', {
+                                mark.addClass('ui-clock-mark-hour').html($('<i>', {
                                     html: i / 5
                                 }).css({'transform': transform, '-webkit-transform': transform, '-mon-transform': transform, '-ms-transform': transform, '-o-transform': transform }));
                             } else {
                                 //分钟刻度
-                                mark.addClass('ui-widget-clock-mark-minute');
+                                mark.addClass('ui-clock-mark-minute');
                             }
                             children.push(mark);
                         }
@@ -81,8 +83,19 @@
                     return children;
                 });
 
+                //初始化指针位置
+                var now = new Date();
+                this._setHourHand(now);
+                this._setMinuteHand(now);
+                this._setSecondHand(now);
+
                 this._clock = clock;
             },
+            /**
+             * 设置参数
+             * @param options
+             * @private
+             */
             _setOptions: function (options) {
                 //默认选项
                 this._options = {
@@ -103,7 +116,7 @@
                 var hours = date.getHours(), minutes = date.getMinutes();
                 //时针
                 var transform = 'rotate(' + (360 / 12 * hours + 30 / 60 * minutes) + 'deg)';
-                $('.ui-widget-clock-hourhand', this._clock).css({'transform': transform, '-webkit-transform': transform, '-mon-transform': transform, '-ms-transform': transform, '-o-transform': transform });
+                $('.ui-clock-hourhand', this._clock).css({'transform': transform, '-webkit-transform': transform, '-mon-transform': transform, '-ms-transform': transform, '-o-transform': transform });
             },
             /**
              * 设置分针
@@ -117,7 +130,7 @@
                 var minutes = date.getMinutes(), seconds = date.getSeconds();
                 // 分针
                 var transform = 'rotate(' + (360 / 60 * minutes + 360 / 60 / 60 * seconds) + 'deg)';
-                $('.ui-widget-clock-minutehand', this._clock).css({'transform': transform, '-webkit-transform': transform, '-mon-transform': transform, '-ms-transform': transform, '-o-transform': transform });
+                $('.ui-clock-minutehand', this._clock).css({'transform': transform, '-webkit-transform': transform, '-mon-transform': transform, '-ms-transform': transform, '-o-transform': transform });
             },
             /**
              * 设置秒针
@@ -131,7 +144,7 @@
                 var seconds = date.getSeconds();
                 //秒针
                 var transform = 'rotate(' + (360 / 60 * seconds) + 'deg)';
-                $('.ui-widget-clock-secondhand', this._clock).css({'transform': transform, '-webkit-transform': transform, '-mon-transform': transform, '-ms-transform': transform, '-o-transform': transform });
+                $('.ui-clock-secondhand', this._clock).css({'transform': transform, '-webkit-transform': transform, '-mon-transform': transform, '-ms-transform': transform, '-o-transform': transform });
             },
             /**
              * 创建Clock
@@ -142,27 +155,20 @@
             establish: function (elem, options) {
                 if (elem && $(elem).length > 0) {
                     this._initialize(elem, options);
+                    return true;
                 }
             },
             /**
              * 启动，让时钟走动
              */
             run: function () {
-                //设置指针位置
-                var now = new Date();
-                this._setHourHand(now);
-                this._setMinuteHand(now);
-                this._setSecondHand(now);
-
                 var that = this;
                 //设置时针、分针、秒针的角度、位置
                 setInterval(function () {
                     that._setHourHand(new Date());
-                }, 3600000);
-                setInterval(function () {
-                    that._setMinuteHand(new Date());
                 }, 60000);
                 setInterval(function () {
+                    that._setMinuteHand(new Date());
                     that._setSecondHand(new Date());
                 }, 1000);
             }

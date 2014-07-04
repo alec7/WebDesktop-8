@@ -463,6 +463,12 @@
      */
     WebDesktop.Widget = function () {
         return {
+            /**
+             * 创建Widget
+             * @param elem
+             * @param widget
+             * @param widgetSettings
+             */
             establish: function (elem, widget, widgetSettings) {
                 if (elem && widget) {
                     if (widgetSettings) {
@@ -484,12 +490,29 @@
                     }
 
                     //加载Widget
-                    var widgetElem = $('<div>', {
+                    $('<div>', {
                         id: 'widget_' + widget['id'],
-                        class: 'ui-desktop-widget'
+                        class: 'ui-desktop-widget',
+                        html: [
+                            $('<div>', {
+                                class: 'ui-desktop-widget-toollist',
+                                html: '工具组'
+                            }).hide()
+                        ]
                     }).appendTo(elem).html(function () {
-                        var script = '$("#' + $(this).attr('id') + '").' + widget['id'] + '()';
-                        eval(script);
+                        try {
+                            //widget主体
+                            var script = '$("#' + $(this).attr('id') + '").' + widget['id'] + '()';
+                            eval(script);
+                        } catch (e) {
+                        }
+                    }).on({
+                        'mouseover': function () {
+                            $('.ui-desktop-widget-toollist', this).show();
+                        },
+                        'mouseout': function () {
+                            $('.ui-desktop-widget-toollist', this).hide();
+                        }
                     });
                 }
             }
