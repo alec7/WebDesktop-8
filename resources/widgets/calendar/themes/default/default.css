@@ -1,0 +1,4 @@
+@charset "utf-8";
+
+/* calendar 日历 */
+.ui-calendar { position: relative; border: 1px solid #232425; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; background: #FFFFFF; }

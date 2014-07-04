@@ -35,6 +35,13 @@
             "theme": {
                 "_default":{"id":"_default", "css":"resources/widgets/calculator/themes/default/default.css"}
             }
+        },
+        "calendar":{
+            "id":"calendar",
+            "js":"resources/widgets/calendar/Calendar.js",
+            "theme": {
+                "_default":{"id":"_default", "css":"resources/widgets/calendar/themes/default/default.css"}
+            }
         }
     },
     "Dictionary":{

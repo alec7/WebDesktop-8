@@ -62,7 +62,7 @@
              */
             setTheme: function (themeId) {
                 if (!themeId) {
-                    themeId = this._options['sys-theme'];
+                    themeId = this._options['sys-themes'];
                 }
 
                 if (themeId && WebDesktop.data['Theme']) {
@@ -241,18 +241,18 @@
                             var widgets = that._options['sidebar']['widgets'];
                             if (widgets) {
                                 for (var widgetId in widgets) {
-                                    if (WebDesktop.data && WebDesktop.data["Widget"]) {
+                                    if (widgets.hasOwnProperty(widgetId) && WebDesktop.data && WebDesktop.data["Widget"]) {
                                         var widget = WebDesktop.data["Widget"]['' + widgetId];
                                         if (!widget) {
                                             break;
                                         }
                                         //加载widget的js
-                                        Utils.$import(widgetId + '_js', widget['js'], function () {
-                                            if (widgets.hasOwnProperty(widgetId)) {
+                                        Utils.$import(widgetId + '_js', widget['js'], function (widgetId, widget) {
+                                            return function(){
                                                 var widgetSettings = widgets[widgetId];
                                                 WebDesktop.Widget.establish(sidebar, widget, widgetSettings);
-                                            }
-                                        })
+                                            };
+                                        }(widgetId, widget))
                                     }
                                 }
                             }
@@ -496,14 +496,28 @@
                         html: [
                             $('<div>', {
                                 class: 'ui-desktop-widget-toollist',
-                                html: '工具组'
+                                html: [
+                                    $('<div>', {
+                                        title: '移除',
+                                        class: 'ui-desktop-widget-remove'
+                                    }).click(function () {
+                                        $('#widget_' + widget['id']).remove();
+                                    }),
+                                    $('<div>', {
+                                        title: '设置',
+                                        class: 'ui-desktop-widget-setup'
+                                    }).click(function () {
+                                    })
+                                ]
                             }).hide()
                         ]
                     }).appendTo(elem).html(function () {
                         try {
                             //widget主体
-                            var script = '$("#' + $(this).attr('id') + '").' + widget['id'] + '()';
-                            eval(script);
+                            var fn = eval('$.fn.' + widget['id']);
+                            if (fn && 'function' == typeof fn) {
+                                fn.call($(this), widgetSettings);
+                            }
                         } catch (e) {
                         }
                     }).on({

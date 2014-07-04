@@ -1,3 +1,5 @@
+@charset "utf-8";
+
 /* clock 时钟 */
 .ui-clock { position: relative; border: 18px solid #333; border-radius: 300px; -moz-border-radius: 300px; -webkit-border-radius: 300px; background: #FFFFFF; }
 .ui-clock .ui-clock-mark { display: block; }
