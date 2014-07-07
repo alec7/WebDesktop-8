@@ -1,4 +1,8 @@
 @charset "utf-8";
 
 /* calendar 日历 */
-.ui-calendar { position: relative; width:120px; height:140px; margin: 0 auto; border: 1px solid #232425; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; background: #FFFFFF; text-align: center; }
+.ui-calendar { position: relative; width: 120px; height: 140px; margin: 0 auto; background: #D05300; border: 1px solid #232425; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; text-align: center; cursor: pointer; }
+.ui-calendar .ui-calendar-pushpin { }
+.ui-calendar .ui-calendar-pushpin b { }
+.ui-calendar .ui-calendar-month { font: 20px/1.5 Arial; color: #FFFFFF; }
+.ui-calendar .ui-calendar-date { font: bold 82px/1.5 Arial; color: #FFFFFF; }

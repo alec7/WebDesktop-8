@@ -28,7 +28,18 @@
                     class: 'ui-calendar',
                     html: [
                         $('<div>', {
-                            class: 'ui-calendar-pushpin'
+                            class: 'ui-calendar-pushpin',
+                            html: function () {
+                                var children = [];
+                                var pushpin = Calendar._options.pushpin;
+                                if (pushpin) {
+                                    for (var i = 0; i < pushpin; i++) {
+                                        children.push('<b>', {
+                                        });
+                                    }
+                                }
+                                return children;
+                            }
                         }),
                         $('<div>', {
                             class: 'ui-calendar-month',
@@ -55,12 +66,13 @@
                         }),
                         $('<div>', {
                             class: 'ui-calendar-date',
-                            html:function () {
+                            html: function () {
                                 return new Date().getDate();
                             }
                         })
                     ]
-                }).appendTo(elem);
+                }).appendTo(elem).click(function () {
+                });
 
                 this._calendar = calendar;
             },
@@ -72,7 +84,8 @@
             _setOptions: function (options) {
                 //默认选项
                 this._options = {
-                    lcoale: 'zh_CN'
+                    lcoale: 'zh_CN',
+                    pushpin: 10
                 };
                 $.extend(this._options, options);
             },

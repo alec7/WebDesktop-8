@@ -501,7 +501,7 @@
                                         title: '移除',
                                         class: 'ui-desktop-widget-remove'
                                     }).click(function () {
-                                        $('#widget_' + widget['id']).remove();
+                                        $('#widget_' + widget['id']).fadeOut();
                                     }),
                                     $('<div>', {
                                         title: '设置',
