@@ -4,15 +4,10 @@
     "sys-wallpaper": "_default",
     "sys-skin": "_default",
     "sidebar": {
+        "applications": {
+        },
         "widgets": {
             "clock": {
-                "theme": "_default"
-            },
-            "calendar": {
-                "theme": "_default",
-                "locale": "zh-CN"
-            },
-            "weather": {
                 "theme": "_default"
             }
         }

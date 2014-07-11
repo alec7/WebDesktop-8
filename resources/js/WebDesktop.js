@@ -238,21 +238,17 @@
                     html: function () {
                         var children = [];
                         if (that._options['sidebar']) {
+                            //加载widgets
                             var widgets = that._options['sidebar']['widgets'];
                             if (widgets) {
                                 for (var widgetId in widgets) {
                                     if (widgets.hasOwnProperty(widgetId) && WebDesktop.data && WebDesktop.data["Widget"]) {
-                                        var widget = WebDesktop.data["Widget"]['' + widgetId];
+                                        var widgetSettings = widgets[widgetId];
+                                        var widget = WebDesktop.data["Widget"][widgetId];
                                         if (!widget) {
-                                            break;
+                                            continue;
                                         }
-                                        //加载widget的js
-                                        Utils.$import(widgetId + '_js', widget['js'], function (widgetId, widget) {
-                                            return function(){
-                                                var widgetSettings = widgets[widgetId];
-                                                WebDesktop.Widget.establish(sidebar, widget, widgetSettings);
-                                            };
-                                        }(widgetId, widget))
+                                        WebDesktop.Widget.establish(sidebar, widget, widgetSettings);
                                     }
                                 }
                             }
@@ -463,6 +459,15 @@
      */
     WebDesktop.Widget = function () {
         return {
+            _initialize: function () {
+                //加载widget的js
+                Utils.$import(widgetId + '_js', widget['js'], function (widgetId, widget) {
+                    return function(){
+                        var widgetSettings = widgets[widgetId];
+                        WebDesktop.Widget.establish(sidebar, widget, widgetSettings);
+                    };
+                }(widgetId, widget))
+            },
             /**
              * 创建Widget
              * @param elem

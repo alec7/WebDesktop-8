@@ -1,25 +1,33 @@
 {
     "Theme":{
-        "_default":{"id":"_default", "css":"resources/themes/default/default.css"}
+        "_default":{"id":"_default", "name":{"zh-CN":"默认"}, "css":"resources/themes/default/default.css"}
     },
     "Wallpaper":{
-        "_default":{"id":"_blue_glow", "name":{"zh_CN":"深海仰望"}, "img":"resources/img/wallpapers/blue_glow.jpg"},
-        "_blue_glow":{"id":"_blue_glow", "name":{"zh_CN":"深海仰望"}, "img":"resources/img/wallpapers/blue_glow.jpg"},
-        "_wood":{"id":"_wood", "name":{"zh_CN":"温馨木纹"}, "img":"resources/img/wallpapers/wood.jpg"},
-        "_sky":{"id":"_sky", "name":{"zh_CN":"仰望苍穹"}, "img":"resources/img/wallpapers/lookup_sky.jpg"},
-        "_grass":{"id":"_grass", "name":{"zh_CN":"茫茫野草"}, "img":"resources/img/wallpapers/grass.jpg"},
-        "_magpie":{"id":"_magpie", "name":{"zh_CN":"七夕"}, "img":"resources/img/wallpapers/magpie_festival.jpg"},
-        "_beach":{"id":"_beach", "name":{"zh_CN":"创意海滩"}, "img":"resources/img/wallpapers/originality_beach.jpg"},
-        "_finger":{"id":"_finger", "name":{"zh_CN":"创意手指"}, "img":"resources/img/wallpapers/originality_finger.jpg"},
-        "_love":{"id":"_love", "name":{"zh_CN":"爱情"}, "img":"resources/img/wallpapers/originality_love.jpg"},
-        "_shell":{"id":"_shell", "name":{"zh_CN":"创意蛋壳"}, "img":"resources/img/wallpapers/originality_shell.jpg"}
+        "_default":{"id":"_blue_glow", "name":{"zh-CN":"深海仰望"}, "img":"resources/img/wallpapers/blue_glow.jpg"},
+        "_blue_glow":{"id":"_blue_glow", "name":{"zh-CN":"深海仰望"}, "img":"resources/img/wallpapers/blue_glow.jpg"},
+        "_wood":{"id":"_wood", "name":{"zh-CN":"温馨木纹"}, "img":"resources/img/wallpapers/wood.jpg"},
+        "_sky":{"id":"_sky", "name":{"zh-CN":"仰望苍穹"}, "img":"resources/img/wallpapers/lookup_sky.jpg"},
+        "_grass":{"id":"_grass", "name":{"zh-CN":"茫茫野草"}, "img":"resources/img/wallpapers/grass.jpg"},
+        "_magpie":{"id":"_magpie", "name":{"zh-CN":"七夕"}, "img":"resources/img/wallpapers/magpie_festival.jpg"},
+        "_beach":{"id":"_beach", "name":{"zh-CN":"创意海滩"}, "img":"resources/img/wallpapers/originality_beach.jpg"},
+        "_finger":{"id":"_finger", "name":{"zh-CN":"创意手指"}, "img":"resources/img/wallpapers/originality_finger.jpg"},
+        "_love":{"id":"_love", "name":{"zh-CN":"爱情"}, "img":"resources/img/wallpapers/originality_love.jpg"},
+        "_shell":{"id":"_shell", "name":{"zh-CN":"创意蛋壳"}, "img":"resources/img/wallpapers/originality_shell.jpg"}
+    },
+    "Dictionary":{
+        "Datetime":{
+            "en-US":{"locale":"en-US","format":"EE, dd Mon yyyy HH:mm:ss"},
+            "zh-CN":{"locale":"zh-CN","format":"yyyy年MM月dd日 HH:mm:ss EEE"}
+        }
     },
     "Widget":{
         "clock":{
             "id":"clock",
-            "js":"resources/widgets/clock/Clock.js",
+            "name":{"zh-CN":"桌面时钟", "en-US":"Desktop Clock"},
+            "icon":{"max":"", "normal":"", "min":""},
+            "background":"resources/widgets/clock/Clock.js",
             "theme": {
-                "_default":{"id":"_default", "css":"resources/widgets/clock/themes/default/default.css"}
+                "_default":{"id":"_default", "name":{"zh-CN":"默认"}, "css":"resources/widgets/clock/themes/default/default.css"}
             }
         },
         "weather":{
@@ -42,12 +50,6 @@
             "theme": {
                 "_default":{"id":"_default", "css":"resources/widgets/calendar/themes/default/default.css"}
             }
-        }
-    },
-    "Dictionary":{
-        "Datetime":{
-            "en-US":{"locale":"en-US","format":"EE, dd Mon yyyy HH:mm:ss"},
-            "zh-CN":{"locale":"zh-CN","format":"yyyy年MM月dd日 HH:mm:ss EEE"}
         }
     }
 }

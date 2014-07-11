@@ -41,6 +41,8 @@
                 }).appendTo($(elem));
 
                 this._weather = weather;
+
+                this.show();
             },
             /**
              * 设置参数
@@ -50,6 +52,7 @@
             _setOptions: function (options) {
                 //默认选项
                 this._options = {
+                    cipy: ""//城市
                 };
                 $.extend(this._options, options);
             },
@@ -67,7 +70,14 @@
              * 展示天气
              */
             show: function () {
-                //获取本地ip
+                //根据ip获取当前位置信息
+                /*$.ajax({
+                    type: "GET",
+                    url: 'http://int.dpool.sina.com.cn/iplookup/?format=json&callback=?',
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });*/
             }
         }
     }();
