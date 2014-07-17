@@ -24,6 +24,7 @@
         "clock":{
             "id":"clock",
             "name":{"zh-CN":"桌面时钟", "en-US":"Desktop Clock"},
+            "description":{"zh-CN":"桌面时钟", "en-US":"Desktop Clock"},
             "icon":{"max":"", "normal":"", "min":""},
             "background":"resources/widgets/clock/Clock.js",
             "theme": {

@@ -475,28 +475,11 @@
              * @param widgetSettings
              */
             establish: function (elem, widget, widgetSettings) {
-                if (elem && widget) {
-                    if (widgetSettings) {
-                        var themeId = widgetSettings['theme'];
-                        if (themeId) {
-                            var themes = widget['theme'];
-                            if (themes) {
-                                var theme = themes[themeId];
-                                if (theme) {
-                                    var css = theme['css'];
-                                    if (css) {
-                                        //加载widget主题
-                                        Utils.$import(widget['id'] + '_css', css, function () {
-                                        });
-                                    }
-                                }
-                            }
-                        }
-                    }
-
+                if (elem && widget && widget['id']) {
+                    var widgetId = widget['id'];
                     //加载Widget
                     $('<div>', {
-                        id: 'widget_' + widget['id'],
+                        id: 'widget_' + widgetId,
                         class: 'ui-desktop-widget',
                         html: [
                             $('<div>', {
