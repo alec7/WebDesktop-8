@@ -54,7 +54,9 @@
              * @param options
              */
             go: function (options) {
-                this._initialize(options);
+                if (options) {
+                    this._initialize(options);
+                }
             },
             /**
              * 设置主题
@@ -242,13 +244,16 @@
                             var widgets = that._options['sidebar']['widgets'];
                             if (widgets) {
                                 for (var widgetId in widgets) {
-                                    if (widgets.hasOwnProperty(widgetId) && WebDesktop.data && WebDesktop.data["Widget"]) {
+                                    if (widgets.hasOwnProperty(widgetId) && WebDesktop.data && WebDesktop.data['Widget']) {
                                         var widgetSettings = widgets[widgetId];
-                                        var widget = WebDesktop.data["Widget"][widgetId];
+                                        var widget = WebDesktop.data['Widget'][widgetId];
                                         if (!widget) {
                                             continue;
                                         }
-                                        WebDesktop.Widget.establish(sidebar, widget, widgetSettings);
+                                        var widgetElem = WebDesktop.Widget.establish(this, widget, widgetSettings);
+                                        if (widgetElem) {
+                                            children.push();
+                                        }
                                     }
                                 }
                             }
@@ -363,7 +368,7 @@
                     class: 'ui-desktop-startMenubar',
                     html: [
                         $('<div>', {
-                            html: 'Start',
+                            html: $messages['WebDesktop.sys.start'],
                             class: 'ui-desktop-startMenubar-button'
                         }),
                         $('div', {
@@ -459,14 +464,30 @@
      */
     WebDesktop.Widget = function () {
         return {
-            _initialize: function () {
-                //加载widget的js
-                Utils.$import(widgetId + '_js', widget['js'], function (widgetId, widget) {
-                    return function(){
-                        var widgetSettings = widgets[widgetId];
-                        WebDesktop.Widget.establish(sidebar, widget, widgetSettings);
-                    };
-                }(widgetId, widget))
+            _widget: null,
+            _initialize: function (elem, widget, widgetSettings) {
+                function () {
+
+
+                    try {
+                        //widget主体
+                        var fn = eval('$.fn.' + widget['id']);
+                        if (fn && 'function' == typeof fn) {
+                            fn.call($(this), widgetSettings);
+                        }
+                    } catch (e) {
+                    }
+
+
+
+
+                    //加载widget的js
+                    Utils.$import(widgetId + '_js', widget['js'], function (widgetId, widget) {
+                        return function () {
+                            var widgetSettings = widgets[widgetId];
+                            WebDesktop.Widget.establish(sidebar, widget, widgetSettings);
+                        };
+                    }(widgetId, widget))
             },
             /**
              * 创建Widget
@@ -478,7 +499,7 @@
                 if (elem && widget && widget['id']) {
                     var widgetId = widget['id'];
                     //加载Widget
-                    $('<div>', {
+                    var widget = $('<div>', {
                         id: 'widget_' + widgetId,
                         class: 'ui-desktop-widget',
                         html: [
@@ -486,28 +507,14 @@
                                 class: 'ui-desktop-widget-toollist',
                                 html: [
                                     $('<div>', {
-                                        title: '移除',
+                                        title: $messages['widget.action.remove'],
                                         class: 'ui-desktop-widget-remove'
                                     }).click(function () {
-                                        $('#widget_' + widget['id']).fadeOut();
-                                    }),
-                                    $('<div>', {
-                                        title: '设置',
-                                        class: 'ui-desktop-widget-setup'
-                                    }).click(function () {
+                                        $('#widget_' + widgetId).fadeOut();
                                     })
                                 ]
                             }).hide()
                         ]
-                    }).appendTo(elem).html(function () {
-                        try {
-                            //widget主体
-                            var fn = eval('$.fn.' + widget['id']);
-                            if (fn && 'function' == typeof fn) {
-                                fn.call($(this), widgetSettings);
-                            }
-                        } catch (e) {
-                        }
                     }).on({
                         'mouseover': function () {
                             $('.ui-desktop-widget-toollist', this).show();
@@ -516,7 +523,11 @@
                             $('.ui-desktop-widget-toollist', this).hide();
                         }
                     });
+
+                    this._widget = widget;
                 }
+
+                return this._widget;
             }
         };
     }();
