@@ -246,13 +246,14 @@
                                 for (var widgetId in widgets) {
                                     if (widgets.hasOwnProperty(widgetId) && WebDesktop.data && WebDesktop.data['Widget']) {
                                         var widgetSettings = widgets[widgetId];
+                                        widgetSettings['locale'] = that._options['sys-locale'];
                                         var widget = WebDesktop.data['Widget'][widgetId];
                                         if (!widget) {
                                             continue;
                                         }
                                         var widgetElem = WebDesktop.Widget.establish(this, widget, widgetSettings);
                                         if (widgetElem) {
-                                            children.push();
+                                            children.push(widgetElem);
                                         }
                                     }
                                 }
@@ -465,29 +466,48 @@
     WebDesktop.Widget = function () {
         return {
             _widget: null,
+            /**
+             * 初始化
+             * @param elem
+             * @param widget
+             * @param widgetSettings
+             * @private
+             */
             _initialize: function (elem, widget, widgetSettings) {
-                function () {
-
-
-                    try {
-                        //widget主体
-                        var fn = eval('$.fn.' + widget['id']);
-                        if (fn && 'function' == typeof fn) {
-                            fn.call($(this), widgetSettings);
-                        }
-                    } catch (e) {
-                    }
-
-
-
-
+                var widgetId = widget['id'];
+                var widgetBackground = widget['background'];
+                if (widgetId && widgetBackground) {
                     //加载widget的js
-                    Utils.$import(widgetId + '_js', widget['js'], function (widgetId, widget) {
+                    Utils.$import(widgetId + '_js', widgetBackground, function (widgetId, widget, widgetSettings) {
+                        //加载widget皮肤
+                        if (widget['theme']) {
+                            var themeCss = null;
+                            if (widgetSettings['theme']) {
+                                var themeId = widgetSettings['theme'];
+                                if (widget['theme'][themeId]) {
+                                    themeCss = widget['theme'][themeId]['css'];
+                                    console.log(themeCss);
+                                    if (themeCss) {
+                                        Utils.$import(widgetId + '_theme', themeCss, function () {
+                                        });
+                                    }
+                                }
+                            }
+                        }
+
                         return function () {
-                            var widgetSettings = widgets[widgetId];
-                            WebDesktop.Widget.establish(sidebar, widget, widgetSettings);
+                            try {
+                                //widget主体
+                                var fn = eval('$.fn.' + widgetId);
+                                console.log(fn);
+                                if (fn && 'function' == typeof fn) {
+                                    fn.call($(elem), widgetSettings, widget);
+                                }
+                            } catch (e) {
+                            }
                         };
-                    }(widgetId, widget))
+                    }(widgetId, widget, widgetSettings))
+                }
             },
             /**
              * 创建Widget
@@ -499,7 +519,7 @@
                 if (elem && widget && widget['id']) {
                     var widgetId = widget['id'];
                     //加载Widget
-                    var widget = $('<div>', {
+                    var widgetElem = $('<div>', {
                         id: 'widget_' + widgetId,
                         class: 'ui-desktop-widget',
                         html: [
@@ -524,7 +544,9 @@
                         }
                     });
 
-                    this._widget = widget;
+                    this._widget = widgetElem;
+
+                    this._initialize(this._widget, widget, widgetSettings);
                 }
 
                 return this._widget;
